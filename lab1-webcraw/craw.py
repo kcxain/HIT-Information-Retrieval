@@ -52,6 +52,7 @@ class Spider:
 
             title = soup.title.string.split('|')[0].strip()
             # print(title)
+            # 所有 p 标签
             raw_contents = soup.find_all('p')
             if raw_contents is None:
                 continue
@@ -69,7 +70,7 @@ class Spider:
                         fonts += fc.strip()
                     contents += fonts
 
-                # TODO 带有 &nbsp 的文字段难以用 string 提取
+                # TODO &nbsp 在开头时，.string 会出错
                 rc = raw.string
                 if rc is None:
                     continue

@@ -2,3 +2,6 @@
 *.pdf
 attachments/
 *.json
+*.docx
+*.doc
+*.zip
