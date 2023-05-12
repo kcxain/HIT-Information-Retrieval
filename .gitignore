@@ -1,7 +1,11 @@
 .idea/
-*.pdf
 attachments/
+ppt/
+*.pdf
 *.json
 *.docx
 *.doc
 *.zip
+stopwords.txt
+train_questions.txt
+test_questions.txt
