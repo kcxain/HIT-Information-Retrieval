@@ -10,6 +10,7 @@ def cal_doc_tf(doc):
     """
     tf = {}
     for word in doc:
+        # print(word)
         tf[word] = tf.get(word, 0) + 1
     return tf
 
@@ -71,7 +72,8 @@ class BM25:
         scores = np.array(scores)
         # 返回降序排列的文档索引
         top_index = np.argsort(-scores)
-        return [self.docs[i] for i in top_index]
+        return top_index, [self.docs[i] for i in top_index]
+
 
 
 if __name__ == '__main__':
