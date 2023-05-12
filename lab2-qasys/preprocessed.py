@@ -6,7 +6,17 @@ from ltp import LTP
 from tqdm import tqdm
 from tqdm.contrib import tzip
 from models import BM25
-from utils import read_jsonlist, get_stopwords
+from utils import read_jsonlist, get_stopwords, write_json
+
+
+def get_docs():
+    doc_path = './data/passages_multi_sentences.json'
+    doc_saved_path = './data/preprocessed_sentences.json'
+    stop_words_path = './stopwords.txt'
+    dev_file = './data/train.json'
+    ltp = LTP()
+    s = DocSearch(doc_path, doc_saved_path, stop_words_path, ltp)
+    return s.docs
 
 
 class DocSearch:
@@ -87,17 +97,32 @@ class DocSearch:
         # acc: 0.8069880418535127
         print(f'acc: {match / num}')
 
+    def predict(self, test_file):
+        test_list = read_jsonlist(test_file)
+        query_list = []
+        for test in tqdm(test_list):
+            query_list.append(test['question'])
+        seg_query_list = self.remove_stop_words(self.seg_model.pipeline(query_list, tasks=["cws"], return_dict=False))[
+            0]
+        for seg_query, test in tzip(seg_query_list, test_list):
+            pid = self.search_pid(seg_query)[0]
+            test['pid'] = int(pid)
+            test['seg_q'] = seg_query
+        print(test_list[0])
+        write_json('./data/test_ans.json', test_list)
+
 
 def main():
     doc_path = './data/passages_multi_sentences.json'
     doc_saved_path = './data/preprocessed_sentences.json'
     stop_words_path = './stopwords.txt'
     dev_file = './data/train.json'
+    test_file = './data/test.json'
     ltp = LTP()
     s = DocSearch(doc_path, doc_saved_path, stop_words_path, ltp)
-    print(s.docs[0])
-    s.search_pid("腾讯")
-    s.evaluate(dev_file)
+    # print(s.docs[0])
+    # s.search_pid("腾讯")
+    s.predict(test_file)
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer, TfidfVectorizer
 import joblib
 from sklearn import svm
-from utils import read_jsonlist, get_stopwords, remove_stop_words
+from utils import read_jsonlist, get_stopwords, remove_stop_words, write_json
 from ltp import LTP
 
 
@@ -62,16 +62,33 @@ class QuestionClassifier:
         score = self.svm_model.score(test_data, test_labels)
         print(score)
 
+    def test_predict(self, test_file):
+        raw_test_data = read_jsonlist(test_file)
+        questions = []
+        for line in raw_test_data:
+            text = " ".join(line['seg_q'])
+            questions.append(text)
+        test_data = self.tf_idf_model.transform(questions)
+        result = self.svm_model.predict(test_data)
+        assert len(result) == len(questions)
+        for r, test in zip(result, raw_test_data):
+            # print(test)
+            test['cls'] = r
+        write_json('./data/test_ans_cls.json', raw_test_data)
+
+
 
 def main():
-    test_file = 'data/test_questions.txt'
+    dev_file = 'data/test_questions.txt'
     train_file = 'data/train_questions.txt'
+    test_file = './data/test_ans.json'
     svm_model = 'saved_model/svm.pkl'
     tf_idf_model = 'saved_model/tf_idf.pkl'
+
     qc = QuestionClassifier(svm_model, tf_idf_model)
     # qc.train(train_file)
     # 0.7809885931558935
-    qc.predict(test_file)
+    qc.test_predict(test_file)
 
 
 if __name__ == '__main__':
