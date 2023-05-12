@@ -8,6 +8,10 @@ def pos_tag(words):
     return model.pipeline(words, tasks=["pos"]).pos
 
 
+def ner(words):
+    return model.pipeline(words, tasks=["ner"]).ner
+
+
 def seg_sentence(sentence):
     stopwords = get_stopwords()
     return remove_stop_words(model.pipeline(sentence, tasks=["cws"], return_dict=False), stopwords)[0]
