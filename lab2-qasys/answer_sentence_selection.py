@@ -144,6 +144,8 @@ class AnswerRank:
             for qid in y_true:
                 lst1 = sorted(y_true[qid], key=lambda item: item[0], reverse=True)
                 lst2 = sorted(y_predict[qid], key=lambda item: item[0], reverse=True)
+                # print(lst1)
+                # input(">>")
                 if lst1[0][1] == lst2[0][1]:
                     right += 1
             return right, len(y_true)
@@ -184,10 +186,10 @@ class AnswerRank:
             print('exact match：{}；total num：{}；acc：{}%'.format(right_predict, num, (right_predict / num) * 100))
 
     def predict(self):
+        self.load_test_data()
         os.system(
             '.\svm_rank_classify.exe %s %s %s' % (
                 self.test_feature_path, self.model_path, self.test_predict_path))
-        self.load_test_data()
         with open(self.test_feature_path, 'r', encoding='utf-8') as f1, open(self.test_predict_path, 'r',
                                                                              encoding='utf-8') as f2:
             labels = {}
@@ -203,13 +205,13 @@ class AnswerRank:
                 qid, pid, q_words = item['qid'], item['pid'], item['question']
                 rank_lst, seg_passage = sorted(labels[qid], key=lambda val: val[0], reverse=True), seg_passages[pid]['seg_doc']
                 print(rank_lst[0])
-                item['answer_sentence'] = [seg_passage[rank_lst[0][1]]]
+                item['answer_sentence'] = seg_passage[rank_lst[0][1]]
             write_json(self.test_ans_path, res_lst)
 
 
 def main():
     ranker = AnswerRank()
-    ranker.train()
+    # ranker.train()
     ranker.predict()
 
 

@@ -1,6 +1,8 @@
 .idea/
 attachments/
 ppt/
+svm_1/
+svm_2/
 saved_model/
 *.pdf
 *.json
@@ -8,6 +10,7 @@ saved_model/
 *.doc
 *.zip
 *.exe
+*.pkl
 stopwords.txt
 train_questions.txt
 test_questions.txt
