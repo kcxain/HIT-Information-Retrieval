@@ -6,23 +6,7 @@ from ltp import LTP
 from tqdm import tqdm
 from tqdm.contrib import tzip
 from models import BM25
-
-
-def get_stopwords(stop_words_file):
-    stop_words = []
-    for line in open(stop_words_file, "r", encoding="utf-8"):
-        stop_words.append(line.strip())
-    return stop_words
-
-
-def read_jsonlist(file_path):
-    l = []
-    with open(file_path, 'r', encoding="utf8") as f:
-        jsonlines = f.readlines()
-    for line in jsonlines:
-        json_line = json.loads(line)
-        l.append(json_line)
-    return l
+from utils import read_jsonlist, get_stopwords
 
 
 class DocSearch:

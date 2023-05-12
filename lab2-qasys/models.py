@@ -75,7 +75,6 @@ class BM25:
         return top_index, [self.docs[i] for i in top_index]
 
 
-
 if __name__ == '__main__':
     docs = [['今天', '我', '去了', '北京大学', '。'],
             ['三体', '是', '一本', '小说'],
@@ -94,4 +93,3 @@ if __name__ == '__main__':
     query = ['我', '计算机科学', '北京大学', '三体', '自然语言']
     model = BM25(docs)
     print(model.doc_sort(query))
-

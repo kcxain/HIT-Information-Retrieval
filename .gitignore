@@ -1,6 +1,7 @@
 .idea/
 attachments/
 ppt/
+saved_model/
 *.pdf
 *.json
 *.docx
@@ -9,3 +10,4 @@ ppt/
 stopwords.txt
 train_questions.txt
 test_questions.txt
+__pycache__
