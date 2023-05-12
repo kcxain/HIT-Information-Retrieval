@@ -4,6 +4,7 @@ ppt/
 svm_1/
 svm_2/
 saved_model/
+index/
 *.pdf
 *.json
 *.docx
