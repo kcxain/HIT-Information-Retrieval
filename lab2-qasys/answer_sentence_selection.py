@@ -211,8 +211,10 @@ class AnswerRank:
 
 def main():
     ranker = AnswerRank()
+    right_predict, num = ranker.evaluate()
+    print('exact match：{}；total num：{}；acc：{}%'.format(right_predict, num, (right_predict / num) * 100))
     # ranker.train()
-    ranker.predict()
+    # ranker.predict()
 
 
 if __name__ == '__main__':
